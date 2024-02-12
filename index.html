@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Volaris Status Page</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #1c1e21;
+			/* Dark mode background color */
+			color: #fff;
+			/* Dark mode text color */
+			transition: background-color 0.3s, color 0.3s;
+		}
+
+		.container {
+			max-width: 800px;
+			margin: 50px auto;
+			position: relative;
+		}
+
+		.card {
+			border-radius: 8px;
+			box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.1);
+			padding: 30px;
+			margin-bottom: 30px;
+			transition: background-color 0.3s;
+		}
+
+		h1 {
+			text-align: center;
+			margin-bottom: 30px;
+		}
+
+		.service {
+			font-size: 24px;
+			font-weight: bold;
+			margin-bottom: 20px;
+		}
+
+		.status {
+			font-size: 18px;
+			margin-bottom: 10px;
+		}
+
+		.status-text {
+			font-weight: bold;
+			margin-right: 5px;
+		}
+
+		.status-badge {
+			display: inline-block;
+			padding: 8px 15px;
+			border-radius: 20px;
+			font-weight: bold;
+			text-transform: uppercase;
+			margin-right: 10px;
+		}
+
+		.status-Inactive {
+			color: #bf0711;
+			background-color: #f8d7da;
+		}
+
+		.status-Maintenance {
+			color: #856404;
+			background-color: #ffeeba;
+		}
+
+		.status-Active {
+			color: #155724;
+			background-color: #d4edda;
+		}
+
+		/* Light mode styles */
+		body.light-mode {
+			background-color: #f5f6f8;
+			/* Light mode background color */
+			color: #000;
+			/* Light mode text color */
+		}
+
+		.card.light-mode {
+			background-color: #fff;
+			/* Light mode card background color */
+		}
+
+		/* Toggle switch */
+		.toggle-container {
+			position: absolute;
+			top: 20px;
+			right: 20px;
+			display: flex;
+			align-items: center;
+			font-size: 18px;
+		}
+
+		.toggle-label {
+			margin-right: 10px;
+		}
+
+		.toggle-switch {
+			position: relative;
+			width: 60px;
+			height: 34px;
+		}
+
+		.toggle-slider {
+			position: absolute;
+			cursor: pointer;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background-color: #ccc;
+			border-radius: 34px;
+			transition: background-color 0.3s;
+		}
+
+		.toggle-slider:before {
+			position: absolute;
+			content: "";
+			height: 26px;
+			width: 26px;
+			left: 4px;
+			bottom: 4px;
+			background-color: white;
+			border-radius: 50%;
+			transition: transform 0.3s;
+		}
+
+		input:checked+.toggle-slider {
+			background-color: #2196F3;
+		}
+
+		input:checked+.toggle-slider:before {
+			transform: translateX(26px);
+		}
+
+		/* Toggle switch label */
+		.toggle-label {
+			font-size: 18px;
+			margin-left: 10px;
+		}
+
+		/* Hide default checkbox */
+		.toggle-checkbox {
+			display: none;
+		}
+	</style>
+</head>
+
+<body class="dark-mode">
+	<div class="container">
+		<h1>Volaris Services Status</h1>
+
+		<div class="card" id="v4Card">
+			<div class="service">Volaris V4</div>
+			<div class="status">
+				Current Status:
+				<span class="status-text">Status:</span>
+				<span class="status-badge" id="v4Status">Active</span>
+			</div>
+		</div>
+
+		<div class="card" id="v3Card">
+			<div class="service">Volaris V3</div>
+			<div class="status">
+				Current Status:
+				<span class="status-text">Status:</span>
+				<span class="status-badge" id="v3Status">Inactive</span>
+			</div>
+		</div>
+
+		<div class="card" id="volariamCard">
+			<div class="service">Volariam</div>
+			<div class="status">
+				Current Status:
+				<span class="status-text">Status:</span>
+				<span class="status-badge" id="volariamStatus">Maintenance</span>
+			</div>
+		</div>
+
+		<div class="card" id="dmaCard">
+			<div class="service">Volaris DMA</div>
+			<div class="status">
+				Current Status:
+				<span class="status-text">Status:</span>
+				<span class="status-badge" id="dmaStatus">Active</span>
+			</div>
+		</div>
+
+<!-- Toggle switch -->
+<div class="toggle-container">
+	<div class="toggle-switch">
+		<input type="checkbox" id="modeCheckbox" class="toggle-checkbox">
+		<label for="modeCheckbox" class="toggle-slider"></label>
+	</div>
+</div>
+
+	<script>
+		// JavaScript variables controlling the status of each service
+    // Things to use: Active, Inactive, Maintenance
+    let v4Status = "Active";
+    let v3Status = "Inactive";
+    let volariamStatus = "Maintenance";
+    let dmaStatus = "Active";
+
+    // Function to update the status display for each service
+    function updateStatus() {
+      document.getElementById("v4Status").textContent = v4Status;
+      document.getElementById("v3Status").textContent = v3Status;
+      document.getElementById("volariamStatus").textContent = volariamStatus;
+      document.getElementById("dmaStatus").textContent = dmaStatus;
+
+      // Updating badge colors based on status
+      document.getElementById("v4Status").classList.remove("status-Inactive", "status-Maintenance", "status-Active");
+      document.getElementById("v4Status").classList.add("status-" + v4Status.replace(" ", ""));
+      document.getElementById("v3Status").classList.remove("status-Inactive", "status-Maintenance", "status-Active");
+      document.getElementById("v3Status").classList.add("status-" + v3Status.replace(" ", ""));
+      document.getElementById("volariamStatus").classList.remove("status-Inactive", "status-Maintenance", "status-Active");
+      document.getElementById("volariamStatus").classList.add("status-" + volariamStatus.replace(" ", ""));
+      document.getElementById("dmaStatus").classList.remove("status-Inactive", "status-Maintenance", "status-Active");
+      document.getElementById("dmaStatus").classList.add("status-" + dmaStatus.replace(" ", ""));
+
+      // Updating card styles based on mode
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        card.classList.toggle('light-mode', document.body.classList.contains('light-mode'));
+      });
+    }
+
+    // Initial update of status display
+    updateStatus();
+
+    // Dark/light mode toggle
+    const modeToggle = document.getElementById('modeCheckbox');
+    modeToggle.addEventListener('change', () => {
+      document.body.classList.toggle('light-mode');
+      updateStatus();
+    });
+	</script>
+</body>
+
+</html>
